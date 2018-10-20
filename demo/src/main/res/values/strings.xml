@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Demo</string>
+    <string name="enter_value_to_store">Enter value to store</string>
+    <string name="get_value">Get Value</string>
+    <string name="save">Save</string>
+    <string name="get_decrypted_value">Get decrypted value</string>
+</resources>
