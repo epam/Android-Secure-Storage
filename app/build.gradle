@@ -29,7 +29,7 @@ android {
 publishing {
     publications {
         aar(MavenPublication) {
-            def packageName = 'com.epam.android.keystore'
+            def packageName = 'com.epam.keystore.keystore'
             def libraryVersion = '1.0.0'
             groupId packageName
             version = libraryVersion
