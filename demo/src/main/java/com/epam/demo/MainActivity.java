@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.epam.keystore.SecureStorage;
-import com.epam.keystore.providers.cipher.CipherProvider;
+import com.epam.keystore.core.SecurityProvider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,13 +34,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+        storage = new SecureStorage(this, SecurityProvider.Type.CIPHER);
 
-        try {
-            storage = new SecureStorage();
-            storage.setSecurityProvider(new CipherProvider(this));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void saveValue(View view) {
