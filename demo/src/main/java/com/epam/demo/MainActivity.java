@@ -9,9 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.epam.keystore.SecureStorage;
-import com.epam.keystore.core.SecureStorageException;
-import com.epam.keystore.providers.cipher.SafeStorageM;
-import com.epam.keystore.providers.cipher.SafeStoragePreM;
+import com.epam.keystore.providers.cipher.CipherProvider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,22 +37,19 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             storage = new SecureStorage();
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                storage.setStrategy(new SafeStorageM(this));
-            } else
-                storage.setStrategy(new SafeStoragePreM(this));
+            storage.setSecurityProvider(new CipherProvider(this));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void saveValue(View view) throws SecureStorageException {
+    public void saveValue(View view) {
         if (storage != null) {
             storage.save(TEST_KEY, etToBeStored.getText().toString());
         }
     }
 
-    public void getDecryptedValue(View view) throws SecureStorageException {
+    public void getDecryptedValue(View view) {
         if (storage != null) {
             tvDecryptedValue.setText(storage.get(TEST_KEY));
         }

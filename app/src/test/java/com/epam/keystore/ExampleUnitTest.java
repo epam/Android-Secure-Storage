@@ -1,4 +1,4 @@
-package com.epam.keystore.keystore;
+package com.epam.keystore;
 
 import org.junit.Test;
 

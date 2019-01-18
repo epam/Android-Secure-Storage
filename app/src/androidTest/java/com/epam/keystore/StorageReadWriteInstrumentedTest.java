@@ -4,8 +4,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.epam.keystore.providers.cipher.SafeStorageM;
-import com.epam.keystore.providers.cipher.SafeStoragePreM;
+import com.epam.keystore.providers.cipher.CipherProvider;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,10 +29,7 @@ public class StorageReadWriteInstrumentedTest {
     public void before() throws Exception {
         context = InstrumentationRegistry.getTargetContext();
         storage = new SecureStorage();
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            storage.setStrategy(new SafeStorageM(context));
-        } else
-            storage.setStrategy(new SafeStoragePreM(context));
+        storage.setSecurityProvider(new CipherProvider(context));
     }
 
     @Test(expected = IllegalArgumentException.class)

@@ -1,30 +1,27 @@
 package com.epam.keystore;
 
-import com.epam.keystore.core.SecureStorageException;
-import com.epam.keystore.core.SensitiveInfoModule;
-
-import java.security.KeyStoreException;
+import com.epam.keystore.core.SecurityProvider;
 
 public class SecureStorage {
-    private SensitiveInfoModule versionStrategy;
+    private SecurityProvider securityProvider;
 
-    public void setStrategy(SensitiveInfoModule strategy) {
-        this.versionStrategy = strategy;
+    public void setSecurityProvider(SecurityProvider securityProvider) {
+        this.securityProvider = securityProvider;
     }
 
-    public void save(String key, String value) throws SecureStorageException {
-        versionStrategy.save(key, value);
+    public void save(String key, String value) {
+        securityProvider.save(key, value);
     }
 
-    public String get(String key) throws SecureStorageException {
-        return versionStrategy.get(key);
+    public String get(String key) {
+        return securityProvider.get(key);
     }
 
     public void clear(String key) {
-        versionStrategy.clear(key);
+        securityProvider.clear(key);
     }
 
-    public void erase() throws KeyStoreException {
-        versionStrategy.erase();
+    public void erase() {
+        securityProvider.erase();
     }
 }
