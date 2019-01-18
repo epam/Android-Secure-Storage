@@ -4,23 +4,19 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.security.KeyPairGeneratorSpec;
-import android.security.keystore.KeyGenParameterSpec;
-import android.security.keystore.KeyProperties;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.Base64;
 
+import com.epam.keystore.core.KeyStoreHelper;
 import com.epam.keystore.core.SecurityProvider;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -29,32 +25,26 @@ import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
-import javax.security.auth.x500.X500Principal;
 
-import static com.epam.keystore.core.KeyStoreHelper.ANDROID_KEY_STORE;
 import static com.epam.keystore.core.KeyStoreHelper.KEY_ALIAS;
 
-public class CipherProvider implements SecurityProvider {
+public class CipherEncryptionProvider implements SecurityProvider {
 
-    SecurityProvider securityProvider;
+    private SecurityProvider securityProvider;
 
-    public CipherProvider(Context context) throws Exception {
+    public CipherEncryptionProvider(Context context) throws Exception {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            // storage.setSecurityProvider(new SafeStorageM(this));
             securityProvider = new CipherM(context);
         } else {
-            //storage.setSecurityProvider(new SafeStoragePreM(this));
             securityProvider = new CipherPreM(context);
         }
     }
@@ -86,32 +76,11 @@ public class CipherProvider implements SecurityProvider {
 
         private SharedPreferences preferences;
 
-        public CipherPreM(Context context) throws InvalidAlgorithmParameterException, KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException, NoSuchProviderException {
+        CipherPreM(Context context) throws InvalidAlgorithmParameterException, KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException, NoSuchProviderException {
             preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            initKeyStore(context);
+            keyStore = KeyStoreHelper.getKeyStorePreM(context);
         }
 
-        private void initKeyStore(Context context) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, NoSuchProviderException, InvalidAlgorithmParameterException {
-            keyStore = KeyStore.getInstance(ANDROID_KEY_STORE);
-            keyStore.load(null);
-            // Generate the RSA key pairs
-            if (!keyStore.containsAlias(KEY_ALIAS)) {
-                // Generate a key pair for encryption
-                Calendar start = Calendar.getInstance();
-                Calendar end = Calendar.getInstance();
-                end.add(Calendar.YEAR, 1);
-                KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(context)
-                        .setAlias(KEY_ALIAS)
-                        .setSubject(new X500Principal("CN=" + KEY_ALIAS + ", O=Android Authority , C=COMPANY"))
-                        .setSerialNumber(BigInteger.TEN)
-                        .setStartDate(start.getTime())
-                        .setEndDate(end.getTime())
-                        .build();
-                KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA", ANDROID_KEY_STORE);
-                kpg.initialize(spec);
-                kpg.generateKeyPair();
-            }
-        }
 
         public void save(String key, String value) {
             try {
@@ -122,7 +91,7 @@ public class CipherProvider implements SecurityProvider {
 
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 CipherOutputStream cipherOutputStream = new CipherOutputStream(outputStream, inputCipher);
-                cipherOutputStream.write(value.getBytes("UTF-8"));
+                cipherOutputStream.write(value.getBytes(StandardCharsets.UTF_8));
                 cipherOutputStream.close();
 
                 byte[] cryptoText = outputStream.toByteArray();
@@ -174,7 +143,7 @@ public class CipherProvider implements SecurityProvider {
                 String value = getPref(key);
                 if (value.isEmpty()) return null;
                 byte[] bytes = getBytes(cipher, value);
-                return new String(bytes, "UTF-8");
+                return new String(bytes, StandardCharsets.UTF_8);
             } catch (NoSuchAlgorithmException | KeyStoreException | InvalidKeyException | IOException | NoSuchPaddingException | UnrecoverableEntryException | NoSuchProviderException e) {
                 e.printStackTrace();
                 return null;
@@ -208,34 +177,11 @@ public class CipherProvider implements SecurityProvider {
         private KeyStore keyStore;
 
         @RequiresApi(api = Build.VERSION_CODES.M)
-        public CipherM(Context context) throws Exception {
+        CipherM(Context context) throws Exception {
             cipher = Cipher.getInstance(AESGCMNOPADDING);
-            secretKey = initSecretKey(KEY_ALIAS);
+            keyStore = KeyStoreHelper.getKeyStoreM();
+            secretKey = KeyStoreHelper.initSecretKey(KEY_ALIAS);
             preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.M)
-        private SecretKey generatorKey(String alias) throws Exception {
-            KeyGenParameterSpec keyGenParameterSpec = new KeyGenParameterSpec
-                    .Builder(alias, KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                    .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-                    .build();
-            KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEY_STORE);
-            keyGenerator.init(keyGenParameterSpec);
-            return keyGenerator.generateKey();
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.M)
-        private SecretKey initSecretKey(String alias) throws Exception {
-            keyStore = KeyStore.getInstance(ANDROID_KEY_STORE);
-            keyStore.load(null);
-            if (keyStore.containsAlias(alias)) {
-                KeyStore.SecretKeyEntry secretKeyEntry = (KeyStore.SecretKeyEntry) keyStore.getEntry(alias, null);
-                return secretKeyEntry.getSecretKey();
-            } else {
-                return generatorKey(alias);
-            }
         }
 
         @Override
@@ -252,10 +198,10 @@ public class CipherProvider implements SecurityProvider {
             try {
                 cipher.init(Cipher.ENCRYPT_MODE, secretKey);
                 putPref(I_VECTOR + key, Arrays.toString(cipher.getIV()));
-                byte[] encryption = cipher.doFinal(password.getBytes("UTF-8"));
+                byte[] encryption = cipher.doFinal(password.getBytes(StandardCharsets.UTF_8));
                 String encryptedBase64Encoded = Base64.encodeToString(encryption, Base64.DEFAULT);
                 putPref(key, encryptedBase64Encoded);
-            } catch (InvalidKeyException | IOException | BadPaddingException | IllegalBlockSizeException e) {
+            } catch (InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
                 e.printStackTrace();
             }
         }
@@ -273,7 +219,7 @@ public class CipherProvider implements SecurityProvider {
                 throw new IllegalArgumentException("Key should not be null or empty");
             }
 
-            if (!isSet(I_VECTOR + key) || !isSet(key)) {
+            if (!isValueSet(I_VECTOR + key) || !isValueSet(key)) {
                 return null;
             }
 
@@ -305,7 +251,7 @@ public class CipherProvider implements SecurityProvider {
                 return null;
         }
 
-        private boolean isSet(String key) {
+        private boolean isValueSet(String key) {
             return preferences.contains(key);
         }
 

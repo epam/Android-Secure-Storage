@@ -1,5 +1,6 @@
 package com.epam.keystore.providers.themis;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -14,14 +15,21 @@ import java.security.KeyStore;
 
 import javax.crypto.SecretKey;
 
-import static com.cossacklabs.themis.SecureCell.*;
+import static com.cossacklabs.themis.SecureCell.MODE_SEAL;
 
-public class ThemisIncryptionProvider implements SecurityProvider {
+public class ThemisEncryptionProvider implements SecurityProvider {
 
     private SharedPreferences preferences;
     private SecretKey secretKey;
     private KeyStore keyStore;
 
+    private ThemisEncryptionProvider() {
+
+    }
+
+    public ThemisEncryptionProvider(Context context) {
+
+    }
 
     @Override
     public void save(String key, String value) {
