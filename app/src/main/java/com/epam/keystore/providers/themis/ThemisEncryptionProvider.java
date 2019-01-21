@@ -13,7 +13,6 @@ import com.cossacklabs.themis.SecureCellException;
 import com.epam.keystore.core.SecureStorageException;
 import com.epam.keystore.core.SecurityProvider;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 import static com.cossacklabs.themis.SecureCell.MODE_SEAL;
@@ -54,12 +53,12 @@ public class ThemisEncryptionProvider implements SecurityProvider {
 
             SecureCellData protectedDataAgain = new SecureCellData(decodedString, null);
 
-            byte[] unprotectedData = sc.unprotect(key, protectedDataAgain);
+            byte[] unprotectedData = sc.unprotect(key.getBytes(StandardCharsets.UTF_8), protectedDataAgain);
             String decryptedData = new String(unprotectedData, StandardCharsets.UTF_8);
 
             return decryptedData;
 
-        } catch (InvalidArgumentException | UnsupportedEncodingException | NullArgumentException | SecureCellException e) {
+        } catch (InvalidArgumentException | NullArgumentException | SecureCellException e) {
             e.printStackTrace();
         }
         return null;
