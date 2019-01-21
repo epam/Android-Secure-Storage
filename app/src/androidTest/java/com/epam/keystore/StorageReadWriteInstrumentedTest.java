@@ -69,7 +69,7 @@ public class StorageReadWriteInstrumentedTest {
     public void shouldClearStorage() {
         storage.save("key12", "1");
         assertEquals("1", storage.get("key12"));
-        storage.clear("key12");
+        storage.remove("key12");
         assertNull(storage.get("key12"));
     }
 
@@ -96,7 +96,7 @@ public class StorageReadWriteInstrumentedTest {
     @Test
     public void shouldClearForKey() {
         storage.save("KEY", "@");
-        storage.clear("KEY");
+        storage.remove("KEY");
         assertNull(storage.get("KEY"));
     }
 
@@ -104,7 +104,7 @@ public class StorageReadWriteInstrumentedTest {
     public void shouldClearKeys() {
         storage.save("KEY", "1");
         storage.save("KEY2", "2");
-        storage.clear("KEY");
+        storage.remove("KEY");
         assertEquals("2", storage.get("KEY2"));
         storage.erase();
         assertNull(storage.get("KEY2"));

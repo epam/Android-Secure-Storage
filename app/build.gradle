@@ -65,15 +65,11 @@ artifactory {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    compileOnly "com.android.support:support-annotations:27.1.1"
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    compileOnly 'com.android.support:support-annotations:27.1.1'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation('com.android.support.test:runner:1.0.1')
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1')
-
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     //Themis
-    debugImplementation project(path: ':themis')
-
+    implementation project(path: ':themis')
 }

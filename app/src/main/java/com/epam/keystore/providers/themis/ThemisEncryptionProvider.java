@@ -2,33 +2,28 @@ package com.epam.keystore.providers.themis;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
+import android.preference.PreferenceManager;
+import android.util.Base64;
 
 import com.cossacklabs.themis.InvalidArgumentException;
 import com.cossacklabs.themis.NullArgumentException;
 import com.cossacklabs.themis.SecureCell;
+import com.cossacklabs.themis.SecureCellData;
 import com.cossacklabs.themis.SecureCellException;
+import com.epam.keystore.core.SecureStorageException;
 import com.epam.keystore.core.SecurityProvider;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyStore;
-
-import javax.crypto.SecretKey;
 
 import static com.cossacklabs.themis.SecureCell.MODE_SEAL;
 
 public class ThemisEncryptionProvider implements SecurityProvider {
 
     private SharedPreferences preferences;
-    private SecretKey secretKey;
-    private KeyStore keyStore;
-
-    private ThemisEncryptionProvider() {
-
-    }
 
     public ThemisEncryptionProvider(Context context) {
-
+        this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     @Override
@@ -36,36 +31,47 @@ public class ThemisEncryptionProvider implements SecurityProvider {
         if (key != null && value != null) {
             try {
                 SecureCell sc = new SecureCell(key.getBytes(StandardCharsets.UTF_8), MODE_SEAL);
-                sc.protect(key.getBytes(StandardCharsets.UTF_8), value.getBytes(StandardCharsets.UTF_8));
+                SecureCellData protectedData = sc.protect(key.getBytes(StandardCharsets.UTF_8), value.getBytes(StandardCharsets.UTF_8));
+                String encodedString = Base64.encodeToString(protectedData.getProtectedData(), Base64.NO_WRAP);
 
-                Log.d("SMC", "Data has been encrypted");
+                this.preferences.edit().putString(key, encodedString).commit();
             } catch (InvalidArgumentException | NullArgumentException | SecureCellException e) {
                 e.printStackTrace();
             }
         } else {
-            Log.d("SMC", "PasswordKey and Message can't be NULL");
+            new SecureStorageException("PasswordKey and Message can't be NULL");
         }
-    }
-
-    @Override
-    public void clear(String key) {
-
-    }
-
-    @Override
-    public void erase() {
-
     }
 
     @Override
     public String get(String key) {
 
         try {
+            String encodedString = preferences.getString(key, "No Such Value");
+
+            byte[] decodedString = Base64.decode(encodedString, Base64.NO_WRAP);
             SecureCell sc = new SecureCell(key.getBytes(StandardCharsets.UTF_8), MODE_SEAL);
 
-        } catch (InvalidArgumentException e) {
+            SecureCellData protectedDataAgain = new SecureCellData(decodedString, null);
+
+            byte[] unprotectedData = sc.unprotect(key, protectedDataAgain);
+            String decryptedData = new String(unprotectedData, StandardCharsets.UTF_8);
+
+            return decryptedData;
+
+        } catch (InvalidArgumentException | UnsupportedEncodingException | NullArgumentException | SecureCellException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void remove(String key) {
+        preferences.edit().remove(key).apply();
+    }
+
+    @Override
+    public void erase() {
+        preferences.edit().clear();
     }
 }

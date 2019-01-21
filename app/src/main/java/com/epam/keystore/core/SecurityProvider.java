@@ -9,7 +9,7 @@ public interface SecurityProvider {
 
     void save(String key, String value);
 
-    void clear(String key);
+    void remove(String key);
 
     void erase();
 

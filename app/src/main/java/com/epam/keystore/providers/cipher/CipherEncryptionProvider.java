@@ -55,8 +55,8 @@ public class CipherEncryptionProvider implements SecurityProvider {
     }
 
     @Override
-    public void clear(String key) {
-        securityProvider.clear(key);
+    public void remove(String key) {
+        securityProvider.remove(key);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class CipherEncryptionProvider implements SecurityProvider {
         }
 
         @Override
-        public void clear(String key) {
+        public void remove(String key) {
             preferences.edit().remove(key).apply();
         }
 
@@ -207,7 +207,7 @@ public class CipherEncryptionProvider implements SecurityProvider {
         }
 
         @Override
-        public void clear(String key) {
+        public void remove(String key) {
             preferences.edit().remove(key).apply();
         }
 
@@ -262,6 +262,5 @@ public class CipherEncryptionProvider implements SecurityProvider {
         private void putPref(String key, String value) {
             preferences.edit().putString(key, value).apply();
         }
-
     }
 }

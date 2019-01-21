@@ -14,26 +14,25 @@ public class SecureStorage {
 
     //TODO: method description
     public SecureStorage(Context context, Type securityProviderType) {
-        switch (securityProviderType) {
-            case CIPHER:
-                if (securityProvider == null) {
+        initProvider(context, securityProviderType);
+    }
+
+    private SecurityProvider initProvider(Context context, Type securityProviderType) {
+        if (securityProvider == null) {
+            switch (securityProviderType) {
+                case CIPHER:
                     try {
                         securityProvider = new CipherEncryptionProvider(context);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-                break;
-            case THEMIS:
-                try {
+                    break;
+                case THEMIS:
                     securityProvider = new ThemisEncryptionProvider(context);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            default:
-                new SecureStorageException("No such provider");
+                    break;
+            }
         }
+        return securityProvider;
     }
 
     //TODO: method description
@@ -56,9 +55,9 @@ public class SecureStorage {
     }
 
     //TODO: method description
-    public void clear(String key) {
+    public void remove(String key) {
         if (securityProvider != null) {
-            securityProvider.clear(key);
+            securityProvider.remove(key);
         } else {
             new SecureStorageException("Provider is not initialized");
         }
