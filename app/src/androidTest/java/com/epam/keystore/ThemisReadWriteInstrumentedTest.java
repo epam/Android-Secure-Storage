@@ -21,13 +21,13 @@ import static org.junit.Assert.assertNull;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class StorageReadWriteInstrumentedTest {
+public class ThemisReadWriteInstrumentedTest {
     private SecureStorage storage;
 
     @Before
     public void before() {
         Context context = InstrumentationRegistry.getTargetContext();
-        storage = new SecureStorage(context, SecurityProvider.Type.CIPHER);
+        storage = new SecureStorage(context, SecurityProvider.Type.THEMIS);
     }
 
     @Test(expected = IllegalArgumentException.class)

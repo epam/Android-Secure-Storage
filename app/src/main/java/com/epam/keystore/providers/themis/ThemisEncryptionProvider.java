@@ -28,6 +28,7 @@ public class ThemisEncryptionProvider implements SecurityProvider {
     @Override
     public void save(String key, String value) {
         if (key != null && value != null) {
+            key.trim();
             try {
                 SecureCell sc = new SecureCell(key.getBytes(StandardCharsets.UTF_8), MODE_SEAL);
                 SecureCellData protectedData = sc.protect(key.getBytes(StandardCharsets.UTF_8), value.getBytes(StandardCharsets.UTF_8));
@@ -44,6 +45,9 @@ public class ThemisEncryptionProvider implements SecurityProvider {
 
     @Override
     public String get(String key) {
+        if (key == null || key.isEmpty()) {
+            throw new IllegalArgumentException("Key should not be null or empty");
+        }
 
         try {
             String encodedString = preferences.getString(key, "No Such Value");
@@ -71,6 +75,6 @@ public class ThemisEncryptionProvider implements SecurityProvider {
 
     @Override
     public void erase() {
-        preferences.edit().clear();
+        preferences.edit().clear().apply();
     }
 }
