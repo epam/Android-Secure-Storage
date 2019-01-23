@@ -3,6 +3,8 @@ package com.epam.keystore.providers.themis;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Base64;
 
 import com.cossacklabs.themis.InvalidArgumentException;
@@ -21,12 +23,12 @@ public class ThemisEncryptionProvider implements SecurityProvider {
 
     private SharedPreferences preferences;
 
-    public ThemisEncryptionProvider(Context context) {
+    public ThemisEncryptionProvider(@NonNull Context context) {
         this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     @Override
-    public void save(String key, String value) {
+    public void save(@NonNull String key, @NonNull String value) {
         if (key != null && value != null) {
             key.trim();
             try {
@@ -43,12 +45,9 @@ public class ThemisEncryptionProvider implements SecurityProvider {
         }
     }
 
+    @Nullable
     @Override
-    public String get(String key) {
-        if (key == null || key.isEmpty()) {
-            throw new IllegalArgumentException("Key should not be null or empty");
-        }
-
+    public String get(@NonNull String key) {
         try {
             String encodedString = preferences.getString(key, "No Such Value");
 
@@ -69,7 +68,7 @@ public class ThemisEncryptionProvider implements SecurityProvider {
     }
 
     @Override
-    public void remove(String key) {
+    public void remove(@NonNull String key) {
         preferences.edit().remove(key).apply();
     }
 

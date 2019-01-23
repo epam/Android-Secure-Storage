@@ -128,10 +128,6 @@ public class CipherEncryptionProvider implements SecurityProvider {
         @Nullable
         @Override
         public String get(String key) {
-            if (key == null || key.isEmpty()) {
-                throw new IllegalArgumentException("Key should not be null or empty");
-            }
-
             KeyStore.PrivateKeyEntry privateKeyEntry;
             try {
                 privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(KEY_ALIAS, null);
@@ -215,10 +211,6 @@ public class CipherEncryptionProvider implements SecurityProvider {
         @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public String get(String key) {
-            if (key == null || key.isEmpty()) {
-                throw new IllegalArgumentException("Key should not be null or empty");
-            }
-
             if (!isValueSet(I_VECTOR + key) || !isValueSet(key)) {
                 return null;
             }

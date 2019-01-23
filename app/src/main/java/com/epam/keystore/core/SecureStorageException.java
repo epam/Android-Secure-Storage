@@ -5,8 +5,19 @@ package com.epam.keystore.core;
  */
 
 public class SecureStorageException extends Exception {
-    public SecureStorageException() { super(); }
-    public SecureStorageException(String message) { super(message); }
-    public SecureStorageException(String message, Throwable cause) { super(message, cause); }
-    public SecureStorageException(Throwable cause) { super(cause); }
+    public SecureStorageException() {
+        super();
+    }
+
+    public SecureStorageException(String message) {
+        super(message);
+    }
+
+    public SecureStorageException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public SecureStorageException(Throwable cause) {
+        super(cause);
+    }
 }

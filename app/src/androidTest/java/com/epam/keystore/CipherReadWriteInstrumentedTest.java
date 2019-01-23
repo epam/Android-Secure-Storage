@@ -30,11 +30,6 @@ public class CipherReadWriteInstrumentedTest {
         storage = new SecureStorage(context, SecurityProvider.Type.CIPHER);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowIllegalArgumentException() {
-        storage.get(null);
-    }
-
     @Test
     public void shouldGetNullValueIfNotSet() {
         String value = storage.get("blabla");
