@@ -34,7 +34,7 @@ public class ThemisEncryptionProvider implements SecurityProvider {
                 SecureCellData protectedData = sc.protect(key.getBytes(StandardCharsets.UTF_8), value.getBytes(StandardCharsets.UTF_8));
                 String encodedString = Base64.encodeToString(protectedData.getProtectedData(), Base64.NO_WRAP);
 
-                this.preferences.edit().putString(key, encodedString).commit();
+                this.preferences.edit().putString(key, encodedString).apply();
             } catch (InvalidArgumentException | NullArgumentException | SecureCellException e) {
                 e.printStackTrace();
             }
