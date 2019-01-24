@@ -2,7 +2,9 @@ package com.epam.keystore.core;
 
 public interface SecureStorageCallback {
 
-    void onComplete();
+    enum ActionType {SAVE, GET, REMOVE, ERASE}
 
-    void onError(Exception e);
+    void onComplete(ActionType actionType);
+
+    void onError(ActionType actionType, Exception e);
 }

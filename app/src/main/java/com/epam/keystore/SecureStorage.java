@@ -3,6 +3,7 @@ package com.epam.keystore;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.epam.keystore.core.SecureStorageCallback;
 import com.epam.keystore.core.SecurityProvider;
 import com.epam.keystore.core.SecurityProvider.Type;
 import com.epam.keystore.providers.cipher.CipherEncryptionProvider;
@@ -37,21 +38,25 @@ public class SecureStorage {
      * @return SecureStore Instance
      */
     public SecureStorage(@NonNull Context context, @NonNull Type securityProviderType) {
-        initProvider(context, securityProviderType);
+        initProvider(context, securityProviderType, null);
     }
 
-    private void initProvider(Context context, Type securityProviderType) {
+    public SecureStorage(@NonNull Context context, @NonNull Type securityProviderType, SecureStorageCallback callback) {
+        initProvider(context, securityProviderType, callback);
+    }
+
+    private void initProvider(Context context, Type securityProviderType, SecureStorageCallback callback) {
         if (context != null && securityProviderType != null) {
             switch (securityProviderType) {
                 case CIPHER:
                     try {
-                        securityProvider = new CipherEncryptionProvider(context);
+                        securityProvider = new CipherEncryptionProvider(context, callback);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case THEMIS:
-                    securityProvider = new ThemisEncryptionProvider(context);
+                    securityProvider = new ThemisEncryptionProvider(context, callback);
                     break;
             }
         }
@@ -65,9 +70,7 @@ public class SecureStorage {
      * @return SecureStore Instance
      */
     public void save(String key, String value) {
-        if (key != null && value != null) {
-            securityProvider.save(key, value);
-        }
+        securityProvider.save(key, value);
     }
 
     /**
@@ -77,22 +80,16 @@ public class SecureStorage {
      * @return Decrypted Data in a String format
      */
     public String get(@NonNull String key) {
-        if (key != null) {
-            return securityProvider.get(key);
-        } else {
-            return null;
-        }
+        return securityProvider.get(key);
     }
 
     /**
      * <b>Description:</b> Returns decrypted data
      *
-     * @param key is used to find data for further removal
+     * @param key is used to find stored data for further removal
      */
     public void remove(@NonNull String key) {
-        if (key != null) {
-            securityProvider.remove(key);
-        }
+        securityProvider.remove(key);
     }
 
     /**

@@ -4,12 +4,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.epam.keystore.SecureStorage;
+import com.epam.keystore.core.SecureStorageCallback;
 import com.epam.keystore.core.SecurityProvider;
 
 
@@ -25,7 +27,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initCipherProvider() {
-        final SecureStorage storage = new SecureStorage(this, SecurityProvider.Type.CIPHER);
+        final SecureStorage storage = new SecureStorage(this, SecurityProvider.Type.CIPHER, new SecureStorageCallback() {
+            @Override
+            public void onComplete(ActionType actionType) {
+                if(actionType == ActionType.SAVE){
+                    Toast.makeText(getBaseContext(), "Has been saved", Toast.LENGTH_SHORT).show();
+                }
+                Log.d("CIPHER_PROVIDER", actionType.toString());
+            }
+
+            @Override
+            public void onError(ActionType actionType, Exception e) {
+                Toast.makeText(getBaseContext(), "Error on"+ actionType.toString() + " " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("CIPHER_PROVIDER", actionType.toString(), e);
+            }
+        });
 
         final EditText valueKey = findViewById(R.id.value_key);
         final EditText valueStore = findViewById(R.id.value_store);
@@ -35,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 storage.save(valueKey.getText().toString(), valueStore.getText().toString());
-                Toast.makeText(view.getContext(), "Has been saved", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -56,7 +71,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initThemisProvider() {
-        final SecureStorage storage = new SecureStorage(this, SecurityProvider.Type.THEMIS);
+        final SecureStorage storage = new SecureStorage(this, SecurityProvider.Type.THEMIS, new SecureStorageCallback() {
+            @Override
+            public void onComplete(SecureStorageCallback.ActionType actionType) {
+                Log.d("THEMIS_PROVIDER", actionType.toString());
+            }
+
+            @Override
+            public void onError(SecureStorageCallback.ActionType actionType, Exception e) {
+                Log.d("THEMIS_PROVIDER", actionType.toString(), e);
+            }
+        });
 
         final EditText valueKey = findViewById(R.id.value_key2);
         final EditText valueStore = findViewById(R.id.value_store2);
@@ -66,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 storage.save(valueKey.getText().toString(), valueStore.getText().toString());
-                Toast.makeText(view.getContext(), "Has been saved", Toast.LENGTH_SHORT).show();
             }
         });
 
