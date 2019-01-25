@@ -87,6 +87,13 @@ public class CipherEncryptionProvider implements SecurityProvider {
         return securityProvider.get(key);
     }
 
+    //Uniq key need to be provided to avoid Key collision in case if two providers
+    //are used at the same app
+    private String generateKeyWithPrefix(String key) {
+        key.trim();
+        return Type.CIPHER.toString() + key;
+    }
+
     class CipherPreM implements SecurityProvider {
         private KeyStore keyStore;
         private static final String CIPHER_TYPE = "RSA/ECB/PKCS1Padding";
@@ -113,6 +120,8 @@ public class CipherEncryptionProvider implements SecurityProvider {
             }
 
             try {
+                key = generateKeyWithPrefix(key);
+
                 KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(KEY_ALIAS, null);
                 // Encrypt the text
                 Cipher inputCipher = Cipher.getInstance(CIPHER_TYPE, CIPHER_PROVIDER);
@@ -152,6 +161,8 @@ public class CipherEncryptionProvider implements SecurityProvider {
                 }
                 return;
             }
+
+            key = generateKeyWithPrefix(key);
             preferences.edit().remove(key).apply();
             if (callback != null) {
                 callback.onComplete(REMOVE);
@@ -187,6 +198,7 @@ public class CipherEncryptionProvider implements SecurityProvider {
                 return null;
             }
 
+            key = generateKeyWithPrefix(key);
             KeyStore.PrivateKeyEntry privateKeyEntry;
             try {
                 privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(KEY_ALIAS, null);
@@ -276,6 +288,8 @@ public class CipherEncryptionProvider implements SecurityProvider {
                 return;
             }
 
+            key = generateKeyWithPrefix(key);
+
             try {
                 cipher.init(Cipher.ENCRYPT_MODE, secretKey);
                 putPref(I_VECTOR + key, Arrays.toString(cipher.getIV()));
@@ -302,6 +316,8 @@ public class CipherEncryptionProvider implements SecurityProvider {
                 }
                 return;
             }
+
+            key = generateKeyWithPrefix(key);
             preferences.edit().remove(key).apply();
             if (callback != null) {
                 callback.onComplete(REMOVE);
@@ -319,6 +335,7 @@ public class CipherEncryptionProvider implements SecurityProvider {
                 return null;
             }
 
+            key = generateKeyWithPrefix(key);
             if (!isValueSet(I_VECTOR + key) || !isValueSet(key)) {
                 return null;
             }

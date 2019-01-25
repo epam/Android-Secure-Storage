@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(view.getContext());
-                anyValue.setText(prefs.getString(valueKey.getText().toString(), ""));
+                anyValue.setText(prefs.getString(SecurityProvider.Type.CIPHER + valueKey.getText().toString(), ""));
             }
         });
     }
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(view.getContext());
-                anyValue.setText(prefs.getString(valueKey.getText().toString(), ""));
+                anyValue.setText(prefs.getString(SecurityProvider.Type.THEMIS + valueKey.getText().toString(), ""));
             }
         });
     }

@@ -58,7 +58,8 @@ public class ThemisEncryptionProvider implements SecurityProvider {
             return;
         }
         if (key != null && value != null) {
-            key.trim();
+            key = generateKeyWithPrefix(key);
+
             try {
                 SecureCell sc = new SecureCell(key.getBytes(StandardCharsets.UTF_8), MODE_SEAL);
                 SecureCellData protectedData = sc.protect(key.getBytes(StandardCharsets.UTF_8), value.getBytes(StandardCharsets.UTF_8));
@@ -89,6 +90,8 @@ public class ThemisEncryptionProvider implements SecurityProvider {
             return null;
         }
         try {
+            key = generateKeyWithPrefix(key);
+
             String encodedString = preferences.getString(key, null);
             String decryptedData;
             if (encodedString != null) {
@@ -131,6 +134,7 @@ public class ThemisEncryptionProvider implements SecurityProvider {
             return;
         }
 
+        key = generateKeyWithPrefix(key);
         preferences.edit().remove(key).apply();
         if (callback != null) {
             callback.onComplete(REMOVE);
@@ -144,5 +148,12 @@ public class ThemisEncryptionProvider implements SecurityProvider {
         if (callback != null) {
             callback.onComplete(ERASE);
         }
+    }
+
+    //Uniq key need to be provided to avoid Key collision in case if two providers
+    //are used at the same app
+    private String generateKeyWithPrefix(String key) {
+        key.trim();
+        return Type.THEMIS.toString() + key;
     }
 }
