@@ -16,7 +16,7 @@ val storage = new SecureStorage(context, SecurityProvider.Type.CIPHER)
   
 **THEMIS** encryption:  
 ```kotlin  
-val storage = new SecureStorage(context, SecurityProvider.Type.CIPHER)  
+val storage = new SecureStorage(context, SecurityProvider.Type.THEMIS)  
   ```  
   
   **SecureStorage EVENTS**:  
@@ -66,7 +66,7 @@ SecureStorage storage = new SecureStorage(context, SecurityProvider.Type.CIPHER)
   
 **THEMIS** encryption:  
 ```java  
-SecureStorage storage = new SecureStorage(context, SecurityProvider.Type.CIPHER);  
+SecureStorage storage = new SecureStorage(context, SecurityProvider.Type.THEMIS);  
   ```  
   
   **SecureStorage EVENTS**:  
