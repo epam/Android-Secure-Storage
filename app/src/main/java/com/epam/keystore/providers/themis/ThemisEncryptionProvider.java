@@ -24,6 +24,17 @@ import static com.epam.keystore.core.SecureStorageCallback.ActionType.GET;
 import static com.epam.keystore.core.SecureStorageCallback.ActionType.REMOVE;
 import static com.epam.keystore.core.SecureStorageCallback.ActionType.SAVE;
 
+/**
+ * <h2>Themis encryption provider class</h2>
+ * <b>Description:</b>
+ * Encryption provider which logic is based on the Themis library
+ * designed by CossackLabs
+ * See <a href="https://github.com/cossacklabs/themis/wiki/Java-and-Android-Howto">GitHub CossackLabs</a>
+ * Java Cipher implementation. Encapsulates two realizations
+ * for M and PreM Android OS versions
+ *
+ * @author Denys Mokhrin
+ */
 public class ThemisEncryptionProvider implements SecurityProvider {
 
     private SharedPreferences preferences;

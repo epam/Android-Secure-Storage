@@ -22,6 +22,14 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.security.auth.x500.X500Principal;
 
+/**
+ * <h2>Keystore untility class</h2>
+ * <b>Description:</b>
+ * Provides basic functions to work with
+ * the KeyStore component
+ *
+ * @author Denys Mokhrin
+ */
 public class KeyStoreHelper {
 
     public static String ANDROID_KEY_STORE = "AndroidKeyStore";

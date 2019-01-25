@@ -11,7 +11,8 @@ import com.epam.keystore.providers.themis.ThemisEncryptionProvider;
 
 /**
  * <h2>Main encryption manager class</h2>
- * <b>Description:</b>The SecureStorage provides an ability to
+ * <b>Description:</b>
+ * The SecureStorage provides an ability to
  * encrypt/decrypt any data based on K, V logic. To instantiate
  * the class, Context and SecurityProviderType need to be provided.
  * There are two main SecurityProviders: Themis and Cipher.
@@ -41,6 +42,16 @@ public class SecureStorage {
         initProvider(context, securityProviderType, null);
     }
 
+    /**
+     * <b>Description:</b> Main method to instantiate SecureStorage
+     * with a operation status callback
+     *
+     * @param context              provides app context
+     * @param securityProviderType constant value, need to be
+     *                             chosen from the enum
+     *                             SecurityProvider.Type
+     * @return SecureStore Instance
+     */
     public SecureStorage(@NonNull Context context, @NonNull Type securityProviderType, SecureStorageCallback callback) {
         initProvider(context, securityProviderType, callback);
     }
