@@ -1,8 +1,7 @@
 
 # Android-Secure-Storage  
 **SecureStorage** is used to keep private information in a safe mode without requiring a password or a fingerprint.  
-There are two types of encryption providers:  CIPHER and THEMIS. Which provide different level of encryption.
-Note: 
+There are two types of encryption providers:  CIPHER and [THEMIS](https://github.com/cossacklabs/themis). Which provide different level of encryption. 
 *THEMIS is stronger then CIPHER and should be used to keep sensitive data like passwords and etc.*
 
 ## KOTLIN
