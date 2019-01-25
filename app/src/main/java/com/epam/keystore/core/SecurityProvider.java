@@ -3,7 +3,7 @@ package com.epam.keystore.core;
 /**
  * <h2>Main encryption manager class</h2>
  * <b>Description:</b>
- * The main interface that generalizeы any encryption
+ * The main interface that generalizes any encryption
  * implementations.
  *
  * @author Denys Mokhrin
