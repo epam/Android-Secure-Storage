@@ -14,7 +14,13 @@ import com.epam.keystore.SecureStorage;
 import com.epam.keystore.core.SecureStorageCallback;
 import com.epam.keystore.core.SecurityProvider;
 
-
+/**
+ * <h2>Main Demo Activity</h2>
+ * <b>Description:</b>
+ * The class is used to demonstrate SecureStorage possibilities
+ *
+ * @author Denys Mokhrin
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -30,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         final SecureStorage storage = new SecureStorage(this, SecurityProvider.Type.CIPHER, new SecureStorageCallback() {
             @Override
             public void onComplete(ActionType actionType) {
-                if(actionType == ActionType.SAVE){
+                if (actionType == ActionType.SAVE) {
                     Toast.makeText(getBaseContext(), "Has been saved", Toast.LENGTH_SHORT).show();
                 }
                 Log.d("CIPHER_PROVIDER", actionType.toString());
@@ -38,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(ActionType actionType, Exception e) {
-                Toast.makeText(getBaseContext(), "Error on"+ actionType.toString() + " " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Error on" + actionType.toString() + " " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 Log.d("CIPHER_PROVIDER", actionType.toString(), e);
             }
         });

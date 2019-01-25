@@ -50,8 +50,6 @@ import static com.epam.keystore.core.SecureStorageCallback.ActionType.SAVE;
  * Encryption provider which logic is based on a Cipher
  * Java Cipher implementation. Encapsulates two realizations
  * for M and PreM Android OS versions
- *
- * @author Denys Mokhrin
  */
 public class CipherEncryptionProvider implements SecurityProvider {
 
