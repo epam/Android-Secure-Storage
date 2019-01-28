@@ -1,4 +1,4 @@
-package com.epam.keystore.providers.cipher;
+package com.epam.securestorage.providers.cipher;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,10 +9,10 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.Base64;
 
-import com.epam.keystore.core.KeyStoreHelper;
-import com.epam.keystore.core.SecureStorageCallback;
-import com.epam.keystore.core.SecureStorageException;
-import com.epam.keystore.core.SecurityProvider;
+import com.epam.securestorage.core.KeyStoreHelper;
+import com.epam.securestorage.core.SecureStorageCallback;
+import com.epam.securestorage.core.SecureStorageException;
+import com.epam.securestorage.core.SecurityProvider;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -38,11 +38,11 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
-import static com.epam.keystore.core.KeyStoreHelper.KEY_ALIAS;
-import static com.epam.keystore.core.SecureStorageCallback.ActionType.ERASE;
-import static com.epam.keystore.core.SecureStorageCallback.ActionType.GET;
-import static com.epam.keystore.core.SecureStorageCallback.ActionType.REMOVE;
-import static com.epam.keystore.core.SecureStorageCallback.ActionType.SAVE;
+import static com.epam.securestorage.core.KeyStoreHelper.KEY_ALIAS;
+import static com.epam.securestorage.core.SecureStorageCallback.ActionType.ERASE;
+import static com.epam.securestorage.core.SecureStorageCallback.ActionType.GET;
+import static com.epam.securestorage.core.SecureStorageCallback.ActionType.REMOVE;
+import static com.epam.securestorage.core.SecureStorageCallback.ActionType.SAVE;
 
 /**
  * <h2>Cipher encryption provider class</h2>

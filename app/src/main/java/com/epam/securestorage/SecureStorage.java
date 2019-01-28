@@ -1,13 +1,13 @@
-package com.epam.keystore;
+package com.epam.securestorage;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.epam.keystore.core.SecureStorageCallback;
-import com.epam.keystore.core.SecurityProvider;
-import com.epam.keystore.core.SecurityProvider.Type;
-import com.epam.keystore.providers.cipher.CipherEncryptionProvider;
-import com.epam.keystore.providers.themis.ThemisEncryptionProvider;
+import com.epam.securestorage.core.SecureStorageCallback;
+import com.epam.securestorage.core.SecurityProvider;
+import com.epam.securestorage.core.SecurityProvider.Type;
+import com.epam.securestorage.providers.cipher.CipherEncryptionProvider;
+import com.epam.securestorage.providers.themis.ThemisEncryptionProvider;
 
 /**
  * <h2>Main encryption manager class</h2>

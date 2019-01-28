@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
 
     defaultConfig {
-        applicationId "com.epam.keystore.keystore.demo"
+        applicationId "com.epam.securestorage.securestorage.demo"
         minSdkVersion 23
         targetSdkVersion 26
         versionCode 1

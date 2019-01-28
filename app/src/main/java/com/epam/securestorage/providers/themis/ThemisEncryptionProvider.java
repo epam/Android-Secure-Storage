@@ -1,4 +1,4 @@
-package com.epam.keystore.providers.themis;
+package com.epam.securestorage.providers.themis;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,17 +12,17 @@ import com.cossacklabs.themis.NullArgumentException;
 import com.cossacklabs.themis.SecureCell;
 import com.cossacklabs.themis.SecureCellData;
 import com.cossacklabs.themis.SecureCellException;
-import com.epam.keystore.core.SecureStorageCallback;
-import com.epam.keystore.core.SecureStorageException;
-import com.epam.keystore.core.SecurityProvider;
+import com.epam.securestorage.core.SecureStorageCallback;
+import com.epam.securestorage.core.SecureStorageException;
+import com.epam.securestorage.core.SecurityProvider;
 
 import java.nio.charset.StandardCharsets;
 
 import static com.cossacklabs.themis.SecureCell.MODE_SEAL;
-import static com.epam.keystore.core.SecureStorageCallback.ActionType.ERASE;
-import static com.epam.keystore.core.SecureStorageCallback.ActionType.GET;
-import static com.epam.keystore.core.SecureStorageCallback.ActionType.REMOVE;
-import static com.epam.keystore.core.SecureStorageCallback.ActionType.SAVE;
+import static com.epam.securestorage.core.SecureStorageCallback.ActionType.ERASE;
+import static com.epam.securestorage.core.SecureStorageCallback.ActionType.GET;
+import static com.epam.securestorage.core.SecureStorageCallback.ActionType.REMOVE;
+import static com.epam.securestorage.core.SecureStorageCallback.ActionType.SAVE;
 
 /**
  * <h2>Themis encryption provider class</h2>

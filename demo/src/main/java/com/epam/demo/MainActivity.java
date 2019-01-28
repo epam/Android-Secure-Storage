@@ -10,9 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.epam.keystore.SecureStorage;
-import com.epam.keystore.core.SecureStorageCallback;
-import com.epam.keystore.core.SecurityProvider;
+import com.epam.securestorage.SecureStorage;
+import com.epam.securestorage.core.SecureStorageCallback;
+import com.epam.securestorage.core.SecurityProvider;
 
 /**
  * <h2>Main Demo Activity</h2>

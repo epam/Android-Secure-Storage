@@ -1,4 +1,4 @@
-package com.epam.keystore.core;
+package com.epam.securestorage.core;
 
 /**
  * Created by Andrei_Gusenkov on 3/13/2018.

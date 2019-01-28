@@ -1,10 +1,10 @@
-package com.epam.keystore;
+package com.epam.securestorage;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.epam.keystore.core.SecurityProvider;
+import com.epam.securestorage.core.SecurityProvider;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,13 +21,13 @@ import static org.junit.Assert.assertNull;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class ThemisReadWriteInstrumentedTest {
+public class CipherReadWriteInstrumentedTest {
     private SecureStorage storage;
 
     @Before
     public void before() {
         Context context = InstrumentationRegistry.getTargetContext();
-        storage = new SecureStorage(context, SecurityProvider.Type.THEMIS);
+        storage = new SecureStorage(context, SecurityProvider.Type.CIPHER);
     }
 
     @Test
@@ -44,10 +44,8 @@ public class ThemisReadWriteInstrumentedTest {
 
     @Test
     public void shouldSaveOtherKeyValue() {
-        storage.save("key", "value");
-        storage.save("key", "value1");
-        storage.save("key", "value2");
-        assertEquals("value2", storage.get("key"));
+        storage.save("key1", "passWORD");
+        assertEquals("passWORD", storage.get("key1"));
     }
 
     @Test
@@ -68,11 +66,6 @@ public class ThemisReadWriteInstrumentedTest {
         assertEquals("1", storage.get("key12"));
         storage.remove("key12");
         assertNull(storage.get("key12"));
-        storage.save("key13", "3456");
-        storage.save("key14", "abc");
-        storage.remove("key14");
-        assertNull(storage.get("key14"));
-        assertEquals("3456", storage.get("key13"));
     }
 
     @Test
@@ -106,14 +99,9 @@ public class ThemisReadWriteInstrumentedTest {
     public void shouldClearKeys() {
         storage.save("KEY", "1");
         storage.save("KEY2", "2");
-        storage.save("KEY3", "3");
-        storage.save("KEY4", "4");
         storage.remove("KEY");
         assertEquals("2", storage.get("KEY2"));
         storage.erase();
         assertNull(storage.get("KEY2"));
-        assertNull(storage.get("KEY2"));
-        assertNull(storage.get("KEY3"));
-        assertNull(storage.get("KEY4"));
     }
 }

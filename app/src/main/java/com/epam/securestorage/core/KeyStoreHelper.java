@@ -1,4 +1,4 @@
-package com.epam.keystore.core;
+package com.epam.securestorage.core;
 
 import android.content.Context;
 import android.os.Build;

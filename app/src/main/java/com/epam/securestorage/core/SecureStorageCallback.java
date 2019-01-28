@@ -1,4 +1,4 @@
-package com.epam.keystore.core;
+package com.epam.securestorage.core;
 
 /**
  * <h2>Operation status Callback</h2>
