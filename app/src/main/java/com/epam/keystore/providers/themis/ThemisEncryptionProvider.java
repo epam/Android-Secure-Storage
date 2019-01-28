@@ -98,9 +98,9 @@ public class ThemisEncryptionProvider implements SecurityProvider {
                 byte[] decodedString = Base64.decode(encodedString, Base64.NO_WRAP);
                 SecureCell sc = new SecureCell(key.getBytes(StandardCharsets.UTF_8), MODE_SEAL);
 
-                SecureCellData protectedDataAgain = new SecureCellData(decodedString, null);
+                SecureCellData encryptedData = new SecureCellData(decodedString, null);
 
-                byte[] unprotectedData = sc.unprotect(key.getBytes(StandardCharsets.UTF_8), protectedDataAgain);
+                byte[] unprotectedData = sc.unprotect(key.getBytes(StandardCharsets.UTF_8), encryptedData);
                 decryptedData = new String(unprotectedData, StandardCharsets.UTF_8);
 
                 if (callback != null) {
