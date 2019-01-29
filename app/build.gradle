@@ -29,7 +29,7 @@ android {
 publishing {
     publications {
         aar(MavenPublication) {
-            def packageName = 'com.epam.android.keystore'
+            def packageName = 'com.epam.securestorage'
             def libraryVersion = '1.0.0'
             groupId packageName
             version = libraryVersion
@@ -65,11 +65,12 @@ artifactory {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    compileOnly "com.android.support:support-annotations:27.1.1"
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:support-annotations:28.0.0'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation('com.android.support.test:runner:1.0.1')
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1')
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    //Themis
+    implementation project(path: ':themis')
 }
