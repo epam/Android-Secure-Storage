@@ -34,9 +34,6 @@ publishing {
             groupId packageName
             version = libraryVersion
             artifactId project.getName()
-
-            // Tell maven to prepare the generated "*.aar" file for publishing
-            artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
         }
     }
 }
@@ -72,5 +69,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     //Themis
-    implementation project(path: ':themis')
+    implementation 'com.cossacklabs.com:themis:0.10.0'
 }
