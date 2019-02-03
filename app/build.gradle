@@ -72,5 +72,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     //Themis
-    implementation project(path: ':themis')
+    implementation 'com.cossacklabs.com:themis:0.10.0'
 }

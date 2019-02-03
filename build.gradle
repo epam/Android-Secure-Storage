@@ -22,6 +22,9 @@ allprojects {
         maven {
             url 'https://artifactory.epam.com/artifactory/libs-release-local'
         }
+        maven {
+            url "https://dl.bintray.com/cossacklabs/maven/"
+        }
     }
 }
 
