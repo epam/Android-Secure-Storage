@@ -46,7 +46,7 @@ storage.get(key)
 To **REMOVE** specific data:   
   
 ```kotlin  
-storage.get(key)  
+storage.remove(key)  
 ``` 
 To **ERASE** all data:   
   
@@ -103,7 +103,7 @@ storage.get(key)
 To **REMOVE** specific data:   
   
 ```java  
-storage.get(key)  
+storage.remove(key)  
 ``` 
 To **ERASE** all data:   
   
